@@ -1,7 +1,20 @@
+import {  useState } from "react";
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import Home from "./pages/Home";
+import ToDo from "./pages/ToDo";
 
 function App() {
+  const [user, setUser] = useState()
+  
+
+
   return (
-    <div>App</div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home sendUser={setUser}/>}/>
+        <Route path="/tasks" element={<ToDo/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

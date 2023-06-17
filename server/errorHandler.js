@@ -1,8 +1,11 @@
+const { Error: {ValidationError} } = require("mongoose")
+
 module.exports.errorHandler = async(err, req, res, next) => {
-    try {
+    
+        if(err instanceof ValidationError){
+            return res.status(400).send({err: err.message})
+        }
         
-        res.status(500).send('unknown error')
-    } catch (error) {
-        next(error)
-    }
+        return res.status(500).send('unknown error')
+    
 }
