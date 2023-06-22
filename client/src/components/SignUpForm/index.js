@@ -1,6 +1,7 @@
 import React from 'react'
 import {Formik, Form, Field} from 'formik'
 import {format} from 'date-fns'
+import { registerUser } from '../../api/userApi'
 
 function SignUp(props) {
     const initialState = {
@@ -12,7 +13,7 @@ function SignUp(props) {
     }
 
     const submitHandler = (values, actions) => {
-        props.getData(values)
+        props.getData({callback: registerUser, values})
     }
 
 

@@ -12,7 +12,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home sendUser={setUser}/>}/>
-        <Route path="/tasks" element={<ToDo/>}/>
+        <Route path="/tasks" element={<ToDo user={user}/>}/>
       </Routes>
     </BrowserRouter>
   );

@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import ToDoList from '../components/ToDoList'
 
 function ToDo() {
+  const [state, setState] = useState([])
+
+  useEffect(()=>{
+
+  },[])
   return (
-    <div>ToDo</div>
+    <div>
+      <h1>Tasks</h1>
+    <ToDoList todo={state}/>
+    </div>
   )
 }
 

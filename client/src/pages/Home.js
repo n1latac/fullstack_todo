@@ -1,18 +1,23 @@
 import React,{useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { registerUser } from '../api'
+import { registerUser } from '../api/userApi'
 import SignIn from '../components/SignInForm'
 import SignUp from '../components/SignUpForm'
 
 function Home(props) {
 const [state, setState] = useState(true)
-const [data, setData] = useState()
 const [error, setError] = useState()
 const navigate = useNavigate()
 
-useEffect(()=>{
-  if(data){
-    registerUser(data)
+
+
+const buttonHandler = () => {
+    setState(state => !state)
+}
+
+const getData = ({callback, values}) => {
+  console.log(callback)
+  callback(values)
     .then(res=>{
       props.sendUser(res)
       navigate('/tasks')
@@ -20,15 +25,6 @@ useEffect(()=>{
     .catch(error=>{
       setError(error)
     })
-  }
-},[data])
-
-const buttonHandler = () => {
-    setState(state => !state)
-}
-
-const getData = (userData) => {
-  setData(userData)
 }
 const buttonText = state ? 'SignUp' : 'SignIn' 
   return (
