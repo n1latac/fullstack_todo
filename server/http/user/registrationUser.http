@@ -2,10 +2,10 @@ POST http://localhost:5000/api/user/register HTTP/1.1
 Content-Type: application/json
 
 {
-    "firstName": "Harry",
-    "lastName": "Potter",
-    "email": "harry@mail.com",
-    "password": "1234qwer",
+    "firstName": "a",
+    "lastName": "a",
+    "email": "aaa@aaa.aaa",
+    "password": "a",
     "birthday": "2020-02-23"
 }
 

@@ -1,12 +1,16 @@
 const {User} = require('../models')
 const bcrypt = require('bcrypt')
+const {verifyToken} = require('../services/tokenAuth')
+const {createToken} = require('../services/tokenAuth')
 
 module.exports.registrationUser = async(req, res, next) => {
     try {
         const {body, passwordHash} = req
         console.log(body)
         const user = await User.create({...body, password: passwordHash})
-        res.status(200).send(user)
+        const token = await createToken({userId: user._id, email: user.email})
+        //localStorage.setItem('token', token)
+        res.status(200).send({data: user, token: token})
     } catch (error) {
         next(error)
     }
@@ -20,11 +24,9 @@ module.exports.loginUser = async(req, res, next) => {
         })
         if(foundUser){
             const result = await bcrypt.compare(body.password,foundUser.password)
-            console.log(result)
-            console.log(passwordHash)
-            console.log(foundUser.password)
             if(result){
-                res.status(200).send({error: 'you are login'})
+                const token = await createToken({userId: foundUser._id, email: foundUser.email})
+                res.status(200).send({data: foundUser, token: token})
             }else{
                 console.log('bad')
                 res.status(400).send({error: 'password is incorrect'})
@@ -33,6 +35,18 @@ module.exports.loginUser = async(req, res, next) => {
             res.status(400).send({error: 'this email is not register.'})
         }
     }catch(error){
+        next(error)
+    }
+}
+
+module.exports.checkAuth = async (req, res, next)=>{
+    try {
+        const {params: {token}} = req
+        const verifiedToken = await verifyToken(token)
+        console.log(verifiedToken)
+        const user = await User.findOne({email: verifiedToken.email})
+        res.status(200).send({data: user})
+    } catch (error) {
         next(error)
     }
 }

@@ -1,6 +1,15 @@
 import CONSTANTS from "../constants"
-export const registerUser = async(data) => {
-  const response = await fetch(`${CONSTANTS.API_BASE}/user/register`,{
+export const getTasks = async(userId) => {
+  const response = await fetch(`${CONSTANTS.API_BASE}/task/${userId}`)
+  if(response.status === 400){
+    const res = await response.json()
+    await Promise.reject(res.err)
+  }
+  return await response.json()
+}
+
+export const pushTask = async(data, userId)=>{
+  const response = await fetch(`${CONSTANTS.API_BASE}/task/${userId}`,{
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
@@ -9,7 +18,7 @@ export const registerUser = async(data) => {
   })
   if(response.status === 400){
     const res = await response.json()
-    await Promise.reject(res.err)
+    await Promise.reject(res.error)
   }
   return await response.json()
 }

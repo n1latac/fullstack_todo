@@ -20,6 +20,7 @@ const getData = ({callback, values}) => {
   callback(values)
     .then(res=>{
       props.sendUser(res)
+      localStorage.setItem('token', res.token)
       navigate('/tasks')
     })
     .catch(error=>{
