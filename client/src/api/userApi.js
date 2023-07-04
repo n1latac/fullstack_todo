@@ -1,4 +1,5 @@
 import CONSTANTS from "../constants"
+import history from "../browserHistory"
 export const registerUser = async(data) => {
   const response = await fetch(`${CONSTANTS.API_BASE}/user/register`,{
     method: 'POST',
@@ -30,13 +31,19 @@ export const loginUser = async(data) =>{
 }
 
 export const checkAuth = async(token) => {
-  const response = await fetch(`${CONSTANTS.API_BASE}/user/${token}`)
+  const response = await fetch(`${CONSTANTS.API_BASE}/user/${token}`,{
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
   if(response.status === 400){
     const res = await response.json()
     await Promise.reject(res.err)
   }
   if(response.status === 403){
     const res = await response.json()
+    history.push('/')
     await Promise.reject(res.err)
   }
   return await response.json()

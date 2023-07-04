@@ -1,5 +1,6 @@
-import {  useState } from "react";
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import {  useEffect, useState } from "react";
+import {Router, Switch, Route} from 'react-router-dom'
+import history from "./browserHistory";
 import Home from "./pages/Home";
 import ToDo from "./pages/ToDo";
 
@@ -9,12 +10,16 @@ function App() {
 
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Home sendUser={setUser}/>}/>
-        <Route path="/tasks" element={<ToDo user={user} sendUser={setUser}/>}/>
-      </Routes>
-    </BrowserRouter>
+    <Router history={history}>
+      <Switch>
+        <Route exact path='/'>
+          <Home sendUser={setUser}/>
+          </Route>
+        <Route exact path="/tasks">
+          <ToDo sendUser={setUser}/>
+          </Route>
+      </Switch>
+    </Router>
   );
 }
 

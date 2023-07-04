@@ -2,8 +2,9 @@ const {Router} = require('express')
 const taskRouter = Router()
 const TaskController = require('../controllers/Task.controller')
 const {userInstance} = require('../middlewares/userInstance')
+const {checkToken} = require('../middlewares/checkToken')
 
-taskRouter.post('/:userId', TaskController.createTask)
-taskRouter.get('/:userId', TaskController.getAllUserTask)
+taskRouter.post('/',checkToken, TaskController.createTask)
+taskRouter.get('/',checkToken, TaskController.getAllUserTask)
 
 module.exports = taskRouter

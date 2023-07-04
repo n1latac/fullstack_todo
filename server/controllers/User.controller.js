@@ -43,7 +43,6 @@ module.exports.checkAuth = async (req, res, next)=>{
     try {
         const {params: {token}} = req
         const verifiedToken = await verifyToken(token)
-        console.log(verifiedToken)
         const user = await User.findOne({email: verifiedToken.email})
         res.status(200).send({data: user})
     } catch (error) {
