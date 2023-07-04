@@ -73,7 +73,7 @@ function ToDo(props) {
     }
     
     
-  },[])
+  },[props.user])
 
 
   function buttonHandler(){
