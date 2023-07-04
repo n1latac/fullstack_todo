@@ -1,10 +1,9 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import ToDoList from '../components/ToDoList'
 import {getTasks} from '../api/taskApi'
-//import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {pushTask} from '../api/taskApi'
 import { checkAuth } from '../api/userApi'
-import history from '../browserHistory'
 
 
 
@@ -39,7 +38,7 @@ function reducer(state, action){
 
 function ToDo(props) {
   const [todo, setTodo] = useState([])
-  //const navigate = useNavigate()
+  const navigate = useNavigate()
   const [state, dispatch] = useReducer(reducer,initialState)
 
 
@@ -59,8 +58,7 @@ function ToDo(props) {
         })
         //делаем запрос на получение юзера
       }else{
-        history.push('/')
-        //return navigate('/')
+        return navigate('/')
       }
     }else{
       getTasks(props.user._id)
@@ -77,7 +75,7 @@ function ToDo(props) {
 
 
   function buttonHandler(){
-    pushTask(state, props.user.data._id)
+    pushTask(state, props.user._id)
     .then(({data})=>{
       const newTodo = [...todo, data]
       setTodo(newTodo)

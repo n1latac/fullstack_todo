@@ -1,14 +1,13 @@
 import React,{useEffect, useState} from 'react'
-//import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { registerUser } from '../api/userApi'
 import SignIn from '../components/SignInForm'
 import SignUp from '../components/SignUpForm'
-import history from '../browserHistory'
 
 function Home(props) {
 const [state, setState] = useState(true)
 const [error, setError] = useState()
-//const navigate = useNavigate()
+const navigate = useNavigate()
 
 
 
@@ -22,8 +21,7 @@ const getData = ({callback, values}) => {
     .then(res=>{
       props.sendUser(res)
       localStorage.setItem('token', res.token)
-      history.push('/tasks')
-      //navigate('/tasks')
+      return navigate('/tasks')
     })
     .catch(error=>{
       setError(error)

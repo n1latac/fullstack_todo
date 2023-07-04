@@ -1,25 +1,20 @@
 import {  useEffect, useState } from "react";
-import {Router, Switch, Route} from 'react-router-dom'
-import history from "./browserHistory";
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Home from "./pages/Home";
 import ToDo from "./pages/ToDo";
 
 function App() {
   const [user, setUser] = useState()
   
-
+  console.log('app')
 
   return (
-    <Router history={history}>
-      <Switch>
-        <Route exact path='/'>
-          <Home sendUser={setUser}/>
-          </Route>
-        <Route exact path="/tasks">
-          <ToDo sendUser={setUser}/>
-          </Route>
-      </Switch>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home sendUser={setUser}/>}/>
+        <Route path="/tasks" element={<ToDo sendUser={setUser} user={user}/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
