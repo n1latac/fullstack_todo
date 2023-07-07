@@ -4,6 +4,7 @@ import {getTasks} from '../api/taskApi'
 import { useNavigate } from 'react-router-dom'
 import {pushTask} from '../api/taskApi'
 import { checkAuth } from '../api/userApi'
+import { history } from '../BrowserHistory'
 
 
 
@@ -41,12 +42,10 @@ function ToDo(props) {
   const navigate = useNavigate()
   const [state, dispatch] = useReducer(reducer,initialState)
 
-
+  const token = localStorage.getItem('token')
 
   useEffect(()=>{
     if(!props.user){
-      const token = localStorage.getItem('token')
-      console.log(token)
       if(token){
         checkAuth(token)
         .then(userData=>{
@@ -54,7 +53,7 @@ function ToDo(props) {
         })
         .catch(error=>{
           console.log(error)
-          //return navigate('/')
+          history.push('/')
         })
         //делаем запрос на получение юзера
       }else{

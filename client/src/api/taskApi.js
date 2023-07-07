@@ -1,4 +1,6 @@
 import CONSTANTS from "../constants"
+import { history } from "../BrowserHistory"
+
 export const getTasks = async() => {
   const token = localStorage.getItem('token')
   const response = await fetch(`${CONSTANTS.API_BASE}/task/`,{
@@ -11,6 +13,7 @@ export const getTasks = async() => {
     const res = await response.json()
     await Promise.reject(res.err)
   }
+  
   return await response.json()
 }
 
@@ -27,6 +30,11 @@ export const pushTask = async(data)=>{
   if(response.status === 400){
     const res = await response.json()
     await Promise.reject(res.error)
+  }
+  if(response.status === 403){
+    const error = await response.json()
+    history.push('/')
+    return Promise.reject(error)
   }
   return await response.json()
 }

@@ -1,7 +1,8 @@
 import {  useEffect, useState } from "react";
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {unstable_HistoryRouter as HistoryRouter, Routes, Route} from 'react-router-dom'
 import Home from "./pages/Home";
 import ToDo from "./pages/ToDo";
+import { history } from "./BrowserHistory";
 
 function App() {
   const [user, setUser] = useState()
@@ -9,12 +10,12 @@ function App() {
   console.log('app')
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={history}>
       <Routes>
         <Route path='/' element={<Home sendUser={setUser}/>}/>
         <Route path="/tasks" element={<ToDo sendUser={setUser} user={user}/>}/>
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 
