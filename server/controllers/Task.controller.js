@@ -3,6 +3,7 @@ const {Task} = require('../models')
 module.exports.createTask = async(req, res, next) =>{
     try {
         const {payloadToken: {userId}, body} = req
+        console.log(userId)
         const task = await Task.create({...body, authorId: userId})
         console.log(task)
         res.status(201).send({data:task})
