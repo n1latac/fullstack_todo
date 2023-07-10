@@ -9,7 +9,7 @@
  const promisifyJWTVerify = promisify(jwt.verify)
 
  module.exports.createAccessToken = async({userId, email})=>await promisifyJWTSign({userId, email}, ACCESS_SECRET, {
-        expiresIn: 60*60
+        expiresIn: 6
     })
  
 

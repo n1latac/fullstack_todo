@@ -23,3 +23,12 @@ module.exports.getAllUserTask = async( req, res, next)=>{
         next(error)
     }
 }
+module.exports.deleteTask = async(req, res, next)=>{
+    try {
+        const {params: {taskId}} = req
+        await Task.findByIdAndDelete(taskId)
+        res.status(200).send({message: 'deleted'})
+    } catch (error) {
+        next(error)
+    }
+}

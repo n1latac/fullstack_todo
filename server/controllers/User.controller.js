@@ -18,7 +18,7 @@ module.exports.registrationUser = async(req, res, next) => {
 
 module.exports.loginUser = async(req, res, next) => {
     try{
-        const {body, passwordHash} = req
+        const {body} = req
         const foundUser = await User.findOne({
             email: body.email
         })
@@ -28,7 +28,7 @@ module.exports.loginUser = async(req, res, next) => {
                 const accessToken = await createAccessToken({userId: foundUser._id, email: foundUser.email})
                 const refreshToken = await createRefreshToken({userId: foundUser._id, email: foundUser.email})
                 const addedToken = await RefreshToken.create({token: refreshToken, userId: foundUser._id })
-                res.status(200).send({data: foundUser, token: {accessToken, refreshToken}})
+                res.status(200).send({data: foundUser, tokens: {accessToken, refreshToken}})
             }else{
                 console.log('bad')
                 res.status(400).send({error: 'password is incorrect'})
@@ -43,9 +43,9 @@ module.exports.loginUser = async(req, res, next) => {
 
 module.exports.checkAuth = async (req, res, next)=>{
     try {
-        const {params: {token}} = req
-        const verifiedToken = await verifyAccessToken(token)
-        const user = await User.findOne({email: verifiedToken.email})
+        const {payloadToken} = req
+        console.log(payloadToken)
+        const user = await User.findOne({email: payloadToken.email})
         res.status(200).send({data: user})
     } catch (error) {
         next(error)
@@ -66,19 +66,27 @@ module.exports.refreshSession = async(req, res, next)=>{
                 -если этот Р-токен - валидный, то мы "Рефрешим" всю сессию - выдаем новую пару токенов(АТ, РТ)
                 -если РТ невалидный, то перенапраляем пользователя на авторизацию.
      */
+    const {body:{refreshToken}} = req
+    let verifiedResult
     try {
-        const {body:{refreshToken}} = req
-        const result = await veifyRefreshToken(refreshToken)
-        if(result){
-            const user = await User.findOne({email: result.email})
+        verifiedResult = await veifyRefreshToken(refreshToken)
+    } catch (error) {
+        res.status(401).send({err: 'Invalid token'})
+    }
+    try {
+        if(verifiedResult){
+            const user = await User.findOne({email: verifiedResult.email})
+            console.log(refreshToken, user._id)
             const RTuser = await RefreshToken.findOne({$and: [{token: refreshToken}, {userId: user._id}]})
+            console.log(RTuser)
             if(RTuser){
-                const removeResult = await RTuser.remove()
+                const removeResult = await RTuser.deleteOne()
                 const newAccessToken = await createAccessToken({userId: user._id,email: user.email})
                 const newRefreshToken = await createRefreshToken({userId: user._id,email: user.email})
-                const addedToken = await RefreshToken.create({token: refreshToken, userId: user._id })
-
+                const addedToken = await RefreshToken.create({token: newRefreshToken, userId: user._id })
                 res.status(200).send({tokens: {accessToken: newAccessToken, refreshToken: newRefreshToken}})
+            }else{
+                res.status(404).send({error: 'no this token'})
             }
 
   

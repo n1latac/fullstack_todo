@@ -7,7 +7,6 @@ module.exports.checkToken = async(req, res, next)=>{
         req.payloadToken = await verifyAccessToken(token)
         next()
     } catch (error) {
-        console.log('no')
         next(error)
     }
 }

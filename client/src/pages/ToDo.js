@@ -42,12 +42,11 @@ function ToDo(props) {
   const navigate = useNavigate()
   const [state, dispatch] = useReducer(reducer,initialState)
 
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('accessToken')
 
   useEffect(()=>{
     if(!props.user){
-      if(token){
-        checkAuth(token)
+        checkAuth()
         .then(userData=>{
           props.sendUser(userData.data)
         })
@@ -56,9 +55,7 @@ function ToDo(props) {
           history.push('/')
         })
         //делаем запрос на получение юзера
-      }else{
-        return navigate('/')
-      }
+      
     }else{
       getTasks(props.user._id)
       .then(result=>{
@@ -93,7 +90,7 @@ function ToDo(props) {
         <input type='date' name='deadline' value={state.value} onChange={e=>dispatch({type: 'deadline', deadline: e.target.value})}/>
         <button onClick={buttonHandler}>send</button>
       </div>
-   <ToDoList todo={todo}/>
+   <ToDoList todo={todo} setTodo={setTodo}/>
     </div>
   )
 }

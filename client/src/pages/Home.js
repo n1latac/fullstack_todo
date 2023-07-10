@@ -16,11 +16,12 @@ const buttonHandler = () => {
 }
 
 const getData = ({callback, values}) => {
-  console.log(callback)
   callback(values)
     .then(res=>{
+      console.log(res)
       props.sendUser(res)
-      localStorage.setItem('token', res.token)
+      //localStorage.setItem('accessToken', res.tokens.accessToken)
+      //localStorage.setItem('refreshToken', res.tokens.refreshToken)
       return navigate('/tasks')
     })
     .catch(error=>{

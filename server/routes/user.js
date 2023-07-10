@@ -6,7 +6,7 @@ const userRouter = Router()
 
 userRouter.post('/register',passwordHash, UserController.registrationUser)
 userRouter.post('/login', passwordHash, UserController.loginUser)
-userRouter.get('/',checkToken, UserController.refreshSession)
+userRouter.get('/',checkToken, UserController.checkAuth)
 userRouter.post('/refresh', UserController.refreshSession)
 
 module.exports = userRouter
