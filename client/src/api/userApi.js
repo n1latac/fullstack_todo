@@ -1,37 +1,49 @@
 import CONSTANTS from "../constants"
 import { history } from "../BrowserHistory"
-export const registerUser = async(data) => {
-  const response = await fetch(`${CONSTANTS.API_BASE}/user/register`,{
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-  })
-  if(response.status === 400){
-    const res = await response.json()
-    await Promise.reject(res.err)
-  }
-  return await response.json()
-}
+import  axiosInstance  from "./axios"
 
-export const loginUser = async(userData) =>{
-  const response = await fetch(`${CONSTANTS.API_BASE}/user/login`,{
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
-  })
-  if(response.status === 400){
-    const res = await response.json()
-    await Promise.reject(res.error)
-  }
-  const {data, tokens} = await response.json()
-  localStorage.setItem('accessToken', tokens.accessToken)
-  localStorage.setItem('refreshToken', tokens.refreshToken)
+export const register = async(userData)=>{
+  const {data} = await axiosInstance.post('/user/register', userData)
   return data
 }
+
+// export const registerUser = async(data) => {
+//   const response = await fetch(`${CONSTANTS.API_BASE}/user/register`,{
+//     method: 'POST',
+//     headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(data)
+//   })
+//   if(response.status === 400){
+//     const res = await response.json()
+//     await Promise.reject(res.err)
+//   }
+//   return await response.json()
+// }
+
+export const loginUser = async(userData) => {
+  const {data} = await axiosInstance.post('/user/login',userData)
+  return data
+}
+
+// export const loginUser = async(userData) =>{
+//   const response = await fetch(`${CONSTANTS.API_BASE}/user/login`,{
+//     method: 'POST',
+//     headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(userData)
+//   })
+//   if(response.status === 400){
+//     const res = await response.json()
+//     await Promise.reject(res.error)
+//   }
+//   const {data, tokens} = await response.json()
+//   localStorage.setItem('accessToken', tokens.accessToken)
+//   localStorage.setItem('refreshToken', tokens.refreshToken)
+//   return data
+// }
 
 export const checkAuth = async() => {
   const accessToken = localStorage.getItem('accessToken')

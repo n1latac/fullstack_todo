@@ -1,6 +1,5 @@
 import React,{useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { registerUser } from '../api/userApi'
 import SignIn from '../components/SignInForm'
 import SignUp from '../components/SignUpForm'
 
@@ -18,7 +17,6 @@ const buttonHandler = () => {
 const getData = ({callback, values}) => {
   callback(values)
     .then(res=>{
-      console.log(res)
       props.sendUser(res)
       //localStorage.setItem('accessToken', res.tokens.accessToken)
       //localStorage.setItem('refreshToken', res.tokens.refreshToken)
