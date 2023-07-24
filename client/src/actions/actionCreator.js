@@ -35,3 +35,20 @@ export const requestCounterError = (error) => {
         error
     })
 }
+export const clickerFetchingAction = () => {
+    return({
+        type: ACTION_TYPES.CLICKER_FETCHING
+    })
+}
+export const clickerSuccessAction = (data) => {
+    return({
+        type: ACTION_TYPES.CLICKER_SUCCESS,
+        data
+    })
+}
+export const clickerErrorAction = (error) => {
+    return({
+        type: ACTION_TYPES.CLICKER_ERROR,
+        error
+    })
+}

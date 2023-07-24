@@ -50,6 +50,26 @@ const reducer = (state = initialState, action) => {
                 error
             }
         }
+        case ACTION_TYPES.CLICKER_FETCHING: {
+            return{
+                ...state,
+                isLoading: true
+            }
+        }
+        case ACTION_TYPES.CLICKER_SUCCESS: {
+            const {data} = action
+            return{
+                ...state,
+                serverResponse: data
+            }
+        }
+        case ACTION_TYPES.CLICKER_ERROR: {
+            const {error} = action
+            return{
+                ...state,
+                error
+            }
+        }
         default: {
             return state
         }

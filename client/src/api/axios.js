@@ -7,7 +7,7 @@
  })
 
  export const exampleApi = async(counter) => {
-    const {data} = await axiosInstance.post('/example',{counter})
+    const {data} = await axiosInstance.post('/example')
     return data
  }
 
